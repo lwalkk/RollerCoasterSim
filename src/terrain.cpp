@@ -11,11 +11,13 @@
 
 #define VERTEX(x,y,z)  glVertex3f(x,y,z)
 
-void Terrain::readTextures( string basePath, string heightfieldFilename, string textureFilename )
+void Terrain::readTextures( string basePath, string heightfieldFilename, string textureFilename, string distortionFilename, string normalFilename)
 
 {
   heightfield = new Texture( basePath, heightfieldFilename );
   texture = new Texture( basePath, textureFilename );
+  distortionTex = new Texture(basePath, distortionFilename);
+  normalTex = new Texture(basePath, normalFilename);
 
   // Store texture map as a vec3 array.  Create a border around it
   // to allow indexing one beyond the texture.
@@ -93,7 +95,7 @@ void Terrain::setupVAO()
     for (unsigned int x=0; x<heightfield->width; x++) {
       *v++ = points[x][y];
       *n++ = normals[x][y];
-      *t++ = vec2( x/(float)( 0.25 * heightfield->width-1), y/(float)(0.25 * heightfield->height-1) );
+      *t++ = vec2( x/(float)( heightfield->width-1), y/(float)(heightfield->height-1) );
     }
       
   // set up triangular faces to cover the terrain
@@ -201,9 +203,19 @@ void Terrain::draw( mat4 &MV, mat4 &MVP, vec3 lightDir, bool drawUndersideOnly )
   gpu.setFloat( "alpha", 1.0 );
   
   const int textureUnitID = 0;
+  const int flowTextureID =  1;
+  const int normalTextureID = 2;
   
-  texture->activate( textureUnitID );
-  gpu.setInt( "terrainColourSampler", textureUnitID );
+  texture->activate( textureUnitID);
+  gpu.setInt( "terrainColourSampler", textureUnitID);
+  gpu.setFloat("time", elapsedSeconds);
+
+  distortionTex->activate(flowTextureID);
+  gpu.setInt("distortionSampler", flowTextureID);
+
+  normalTex->activate(normalTextureID);
+  gpu.setInt("normalSampler", normalTextureID);
+
 
   // underside
 

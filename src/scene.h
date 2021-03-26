@@ -55,6 +55,7 @@ class Scene {
   vec3       startCtrlPointPos;
   int        selectedCtrlPoint;
   bool       movingSelectedBase;
+  static float trainVerts[];
 
  public:
 

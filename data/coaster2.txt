@@ -1,7 +1,7 @@
 terrain
   hills-heights.png
-  uv.png
-
+  water.png
+  
 points
   67.8399 58.0586 30.8682 3.01424
   88.2944 125.087 25.742 30

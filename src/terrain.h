@@ -30,18 +30,43 @@ class Terrain {
 
   Texture *heightfield;
   Texture *texture;
+  Texture* distortionTex;
+  Texture* normalTex;
 
-  Terrain( string basePath, string heightfieldFilename, string textureFilename ) {
-    readTextures( basePath, heightfieldFilename, textureFilename );
-    gpu.init( vertShader, fragShader, "in terrain.cpp" );
-    setupVAO();
+   /*Terrain(string basePath, string heightfieldFilename, string textureFilename)
+  {
+      readTextures(basePath, heightfieldFilename, textureFilename);
+      vertShader = gpu.textFileRead("data/water.vert");
+      fragShader = gpu.textFileRead("data/water.frag");
+      elapsedSeconds = 0;
+
+      gpu.init(vertShader, fragShader, "in terrain.cpp");
+      setupVAO();
   }
+  */
+
+   Terrain(string basePath, string heightfieldFilename, string textureFilename)
+  {
+      readTextures(basePath, heightfieldFilename, textureFilename, "flow_noise.png", "water-normal.png");
+      vertShader = gpu.textFileRead("data/water.vert");
+      fragShader = gpu.textFileRead("data/water.frag");
+      elapsedSeconds = 0;
+
+      gpu.init(vertShader, fragShader, "in terrain.cpp");
+      setupVAO();
+  }
+
+
+
+
+
   
-  void readTextures( string basePath, string heightfieldFilename, string textureFilename );
+  void readTextures( string basePath, string heightfieldFilename, string textureFilename, string distortionFilename,  string normalFilename );
+  void readTextures( string basePath, string heightfieldFilename, string textureFilename);
   void setupVAO();
   void draw( mat4 &MV, mat4 &MVP, vec3 lightDir, bool drawUndersideOnly );
 
-  inline void setTime(float time) { elapsedSeconds = time; }
+  inline void setTime(float time) { elapsedSeconds += time; }
 
   bool findIntPoint( vec3 rayStart, vec3 rayDir, vec3 planePerp, vec3 &intPoint, mat4 &M );
 };

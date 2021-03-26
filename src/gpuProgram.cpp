@@ -33,6 +33,7 @@ char* GPUProgram::textFileRead(const char *fileName)
       fclose(file);
     }
   }
+
   
   return _strdup(text);
 }
@@ -178,6 +179,7 @@ void GPUProgram::initFromFile( const char *vsFile, const char *fsFile, const cha
     std::cerr << "Vertex shader file '" << vsFile << "' not found." << std::endl;
     return;
   }
+
     
   char* fsText = textFileRead(fsFile);
     

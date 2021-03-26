@@ -524,17 +524,22 @@ void Scene::read( const char *filename )
 
     if (cmd == "terrain") {
 
-      string heightFile, textureFile;
-      in >> heightFile >> textureFile;
+        string heightFile, textureFile;
+        in >> heightFile >> textureFile;
 
-      terrain = new Terrain( string(basePath), heightFile, textureFile );
+        std::cout << "got to terrain" << std::endl;
+
+        terrain = new Terrain(string(basePath), heightFile, textureFile);
       in >> cmd;
 
-    } else if (cmd == "points") {
+    } 
+
+    else if (cmd == "points") {
 
       ctrlPoints->clear();
 
       in >> cmd;
+
 
       while (in && (isdigit(cmd.c_str()[0]) || cmd.c_str()[0] == '-' || cmd.c_str()[0] == '.')) {
         float y, z, h;
@@ -544,6 +549,7 @@ void Scene::read( const char *filename )
 
       }
     }
+
   }
 
   free( basePath ); 
@@ -638,3 +644,20 @@ void Scene::drawAllTrack( mat4 &MV, mat4 &MVP, vec3 lightDir )
 
     }
 }
+
+float Scene::trainVerts[] =
+{
+    -0.75f, 0.00f, 0.00f,
+     0.75f, 0.00f, 0.00f,
+     0.75f, 0.30f, 0.00f,
+     0.35f, 0.30f, 0.00f,
+     0.35f, 0.70f, 0.00f,
+     0.75f, 0.70f, 0.00f,
+     0.75f, 1.00f, 0.00f,
+    -0.75f, 1.00f, 0.00f,
+    -0.75f, 0.70f, 0.00f,
+    -0.35f, 0.70f, 0.00f,
+    -0.35f, 0.30f, 0.00f, 
+    -0.75f, 0.30f, 0.00f
+};
+
